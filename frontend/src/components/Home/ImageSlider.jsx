@@ -4,28 +4,28 @@ import { ProductService } from './service/ProductService';
 
 function ImageSlider() {
   const [products, setProducts] = useState([]);
-  const responsiveOptions = [
-      {
-          breakpoint: '1400px',
-          numVisible: 2,
-          numScroll: 1
-      },
-      {
-          breakpoint: '1199px',
-          numVisible: 3,
-          numScroll: 1
-      },
-      {
-          breakpoint: '767px',
-          numVisible: 2,
-          numScroll: 1
-      },
-      {
-          breakpoint: '575px',
-          numVisible: 1,
-          numScroll: 1
-      }
-  ];
+//   const responsiveOptions = [
+//       {
+//           breakpoint: '1400px',
+//           numVisible: 2,
+//           numScroll: 1
+//       },
+//       {
+//           breakpoint: '1199px',
+//           numVisible: 3,
+//           numScroll: 1
+//       },
+//       {
+//           breakpoint: '767px',
+//           numVisible: 2,
+//           numScroll: 1
+//       },
+//       {
+//           breakpoint: '575px',
+//           numVisible: 1,
+//           numScroll: 1
+//       }
+//   ];
 
   useEffect(() => {
       ProductService.getProductsSmall().then((data) => setProducts(data.slice(0, 9)));
@@ -52,7 +52,7 @@ function ImageSlider() {
 
   return (
       <div className="card">
-          <Carousel value={products} autoplayInterval={2000} numVisible={1} numScroll={1} showNavigators={false} showIndicators={false} responsiveOptions={responsiveOptions} itemTemplate={productTemplate}/>
+          <Carousel value={products} autoplayInterval={2000} numVisible={1} numScroll={1} showNavigators={false} showIndicators={false}  itemTemplate={productTemplate}/>
       </div>
   )
 }

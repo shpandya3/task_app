@@ -19,8 +19,7 @@ root.render(
         <ThemeProvider>
           <AuthProvider>
             <LoginDialogueProvider>
-
-            <App />
+              <App />
             </LoginDialogueProvider>
           </AuthProvider>
         </ThemeProvider>
