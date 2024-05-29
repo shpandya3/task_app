@@ -39,7 +39,6 @@ const ViewTaskTable = () => {
   };
 
   const statusBodyTemplate = (rowData) => {
-    console.log("🚀 ~ statusBodyTemplate ~ rowData.isCompleted:", rowData.isCompleted)
 
     return rowData.isCompleted === true ? (
       <Tag
@@ -128,8 +127,8 @@ const ViewTaskTable = () => {
         onRowEditComplete={onRowEditComplete}
         // sortField="title"
         // sortOrder={1}
-        sortMode="multiple"
-        multiSortMeta={sortMeta}
+        sortMode={data?.data && "multiple"}
+        multiSortMeta={data?.data && sortMeta}
       >
         <Column
           field="title"

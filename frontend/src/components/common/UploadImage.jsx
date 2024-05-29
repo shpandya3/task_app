@@ -6,12 +6,10 @@ import { Button } from "primereact/button";
 import { Tooltip } from "primereact/tooltip";
 import { Tag } from "primereact/tag";
 
-export default function UploadFile() {
+export default function UploadImage({ handleImageUpload }) {
   const toast = useRef(null);
   const [totalSize, setTotalSize] = useState(0);
   const fileUploadRef = useRef(null);
-
-  console.log("🚀 ~ UploadFile ~ getFiles:", fileUploadRef.current)
 
   const onTemplateSelect = (e) => {
     let _totalSize = totalSize;
@@ -114,7 +112,7 @@ export default function UploadFile() {
     return (
       <div className="flex align-items-center flex-column">
         <i
-          className="pi pi-image mt-3 p-5"
+          className="pi pi-image"
           style={{
             fontSize: "5em",
             borderRadius: "50%",
@@ -124,7 +122,7 @@ export default function UploadFile() {
         ></i>
         <span
           style={{ fontSize: "1.2em", color: "var(--text-color-secondary)" }}
-          className="my-5"
+          className="my-3"
         >
           Drag and Drop Image Here
         </span>
@@ -150,8 +148,9 @@ export default function UploadFile() {
       "custom-cancel-btn p-button-danger p-button-rounded p-button-outlined",
   };
 
-
-  
+  const handleFilesUpload = (files) => {
+    handleImageUpload(files);
+  };
 
   return (
     <div>
@@ -162,11 +161,13 @@ export default function UploadFile() {
       <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" />
 
       <FileUpload
+        auto
         ref={fileUploadRef}
         name="demo[]"
         // url="/api/upload"
-       multiple
+        multiple={false}
         accept="image/*"
+        uploadHandler={handleFilesUpload}
         maxFileSize={1000000}
         onUpload={onTemplateUpload}
         onSelect={onTemplateSelect}
@@ -178,6 +179,7 @@ export default function UploadFile() {
         chooseOptions={chooseOptions}
         uploadOptions={uploadOptions}
         cancelOptions={cancelOptions}
+        customUpload={true}
       />
     </div>
   );

@@ -9,6 +9,8 @@ import { Avatar } from "primereact/avatar";
 const Navbar = () => {
   const navigate = useNavigate();
   const { logout, user } = useAuth();
+  // const userData = sessionStorage.getItem("user");
+  // const user = JSON.parse(userData);
   const { theme, toggleTheme } = useContext(ThemeContext);
   // const [theme, setTheme] = useState('light')
 
@@ -90,10 +92,20 @@ const Navbar = () => {
     },
   ];
 
+  const homeItems = [
+    {
+      label: "Change Theme",
+      icon: "pi pi-palette",
+      command: () => {
+        toggleTheme();
+      },
+    },
+  ];
+
   return (
     <div className="card">
       <Menubar
-        model={user?.role === "ADMIN" ? adminItems : userItems}
+        model={user? (user?.role === "ADMIN" ? adminItems : userItems) : homeItems}
         start={<span className="text-3xl font-bold">Task Tracker</span>}
       />
     </div>
