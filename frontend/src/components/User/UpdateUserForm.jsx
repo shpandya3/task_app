@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { RadioButton } from "primereact/radiobutton";
@@ -7,6 +7,9 @@ import UploadImage from "../common/UploadImage";
 import UploadPdf from "../common/UploadPdf";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "primereact/button";
+import ImageRender from "../temp/ImageRender";
+import { updateUser } from "../../api/user/UserApi";
+import { useMutation } from "@tanstack/react-query";
 
 const UpdateUserForm = () => {
   const {
@@ -15,20 +18,42 @@ const UpdateUserForm = () => {
     formState: { errors },
     control,
     setValue,
+    getValues,
   } = useForm();
 
+  const [showImage, setShowImage] = useState(false);
+
+  const updateUserMutation = useMutation({
+    mutationFn: (data) => updateUser(data),
+  });
+
   const handlePdfUpload = (files) => {
-    setValue("pdf", files)
+    console.log("🚀 ~ handlePdfUpload ~ files:", files);
+    setValue("introPdf", files[0]);
   };
 
-  const handleImageUpload = (files) => {
-    setValue("image", files)
+  const handleImageUpload = async (files) => {
+    setValue("avatar", files[0]);
+    setShowImage(true);
   };
+
+  const [base64Data, setBase64Data] = useState("");
+
+  async function fetchDataFromBlob(objectURL) {
+    console.log("🚀 ~ fetchDataFromBlob ~ objectURL:", objectURL[0]);
+    try {
+      // Further process the data (e.g., convert to ArrayBuffer, read as text, etc.)
+      // ...
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
   const onSubmit = (data) => {
     // data.image = image
     // data.pdf = pdf
     console.log("🚀 ~ onSubmit ~ data:", data);
+    updateUserMutation.mutate(data);
   };
 
   return (
@@ -110,8 +135,8 @@ const UpdateUserForm = () => {
                     inputId="office"
                     {...field}
                     name={field.name}
-                    value="office"
-                    checked={field.value?.includes("office")}
+                    value="PROFESSIONAL"
+                    checked={field.value?.includes("PROFESSIONAL")}
                     onChange={(e) => {
                       const value = e.checked
                         ? [...(field.value || []), e.value]
@@ -129,8 +154,8 @@ const UpdateUserForm = () => {
                     inputId="personal"
                     {...field}
                     name={field.name}
-                    value="personal"
-                    checked={field.value?.includes("personal")}
+                    value="PERSONAL"
+                    checked={field.value?.includes("PERSONAL")}
                     onChange={(e) => {
                       const value = e.checked
                         ? [...(field.value || []), e.value]
@@ -148,8 +173,8 @@ const UpdateUserForm = () => {
                     inputId="others"
                     {...field}
                     name={field.name}
-                    value="others"
-                    checked={field.value?.includes("others")}
+                    value="TEAM"
+                    checked={field.value?.includes("TEAM")}
                     onChange={(e) => {
                       const value = e.checked
                         ? [...(field.value || []), e.value]
@@ -185,8 +210,8 @@ const UpdateUserForm = () => {
                     {...field}
                     name={field.name}
                     inputRef={field.ref}
-                    value="male"
-                    checked={field.value === "male"}
+                    value="MALE"
+                    checked={field.value === "MALE"}
                   />
                   <label htmlFor="male" className="ml-2 pt-1">
                     Male
@@ -197,8 +222,8 @@ const UpdateUserForm = () => {
                     inputId="female"
                     {...field}
                     name={field.name}
-                    value="female"
-                    checked={field.value === "female"}
+                    value="FEMALE"
+                    checked={field.value === "FEMALE"}
                   />
                   <label htmlFor="female" className="ml-2 pt-1">
                     Female
@@ -226,6 +251,10 @@ const UpdateUserForm = () => {
       </div>
       <div className="col-2">
         <Button type="button" label="Reset" className="w-full" />
+      </div>
+
+      <div className="col-2">
+        {showImage && <ImageRender data={getValues("image")} />}
       </div>
     </form>
   );

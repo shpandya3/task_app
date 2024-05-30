@@ -8,9 +8,9 @@ import { Avatar } from "primereact/avatar";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { logout, user } = useAuth();
-  // const userData = sessionStorage.getItem("user");
-  // const user = JSON.parse(userData);
+  const { logout } = useAuth();
+  const userData = sessionStorage.getItem("user");
+  const user = JSON.parse(userData);
   const { theme, toggleTheme } = useContext(ThemeContext);
   // const [theme, setTheme] = useState('light')
 

@@ -1,12 +1,9 @@
 import axios from "axios";
-
-const token = localStorage.getItem("token")
-
 export async function getUserUpdates() {
   return axios
     .get("http://localhost:3001/users/updates", {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
     .then((res) => res.data);
@@ -16,7 +13,7 @@ export async function getUserChartData() {
   return axios
     .get("http://localhost:3001/users/chart-for-user", {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
     .then((res) => res.data);
@@ -40,11 +37,25 @@ export async function loginUser(userData) {
     .then((res) => res.data);
 }
 
+export async function updateUser(userData) {
+  return axios
+    .put(
+      `http://localhost:3001/users`,
+      {dataToUpdate: userData},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Add Authorization header with bearer token
+        },
+      }
+    )
+    .then((res) => res.data);
+}
+
 export async function getUsers() {
   return axios
     .get("http://localhost:3001/users", {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
     .then((res) => res.data);
