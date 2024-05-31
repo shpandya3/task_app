@@ -150,12 +150,13 @@ const deleteUserById = async (req, res) => {
 
 const updateUserProfile = async (req, res) => {
   try {
-    console.log(req.body.dataToUpdate)
+    console.log(req.body)
+    console.log(req.file)
     const updatedUser = await prisma.user.update({
       where: {
         id: req.user.id,
       },
-      data: req.body.dataToUpdate,
+      data: req.body,
     });
 
     res.json(updatedUser);

@@ -21,43 +21,42 @@ const UpdateUserForm = () => {
     getValues,
   } = useForm();
 
-  const [showImage, setShowImage] = useState(false);
-
   const updateUserMutation = useMutation({
     mutationFn: (data) => updateUser(data),
   });
+
+  const [image, setImage] = useState(null)
 
   const handlePdfUpload = (files) => {
     console.log("🚀 ~ handlePdfUpload ~ files:", files);
     setValue("introPdf", files[0]);
   };
 
-  const handleImageUpload = async (files) => {
-    setValue("avatar", files[0]);
-    setShowImage(true);
+  const handleImageUpload = async (data) => {
+    console.log("🚀 ~ handleImageUpload ~ files:",  data?.files) 
+    const blob = await fetch(data?.files[0]?.objectURL).then(r => r.blob());
+    const imageFromBlob = new File([blob], data?.files[0]?.name)
+    // const response = await fetch(data?.files[0]?.objectURL)
+    // console.log("🚀 ~ handleImageUpload ~ imageFromBlob:", imageFromBlob)
+    // const imageData = await response.blob()
+
+    // setValue("avatar", imageFromBlob);
+    setImage(imageFromBlob)
   };
 
-  const [base64Data, setBase64Data] = useState("");
-
-  async function fetchDataFromBlob(objectURL) {
-    console.log("🚀 ~ fetchDataFromBlob ~ objectURL:", objectURL[0]);
-    try {
-      // Further process the data (e.g., convert to ArrayBuffer, read as text, etc.)
-      // ...
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }
-
   const onSubmit = (data) => {
-    // data.image = image
-    // data.pdf = pdf
-    console.log("🚀 ~ onSubmit ~ data:", data);
-    updateUserMutation.mutate(data);
+    // console.log("🚀 ~ onSubmit ~ data:", data);
+    // console.log("🚀 ~ onSubmit ~ image:", image)
+    const formData = new FormData()
+    formData.append("username", getValues("username"))
+    formData.append("email", getValues("email"))
+    formData.append("phone", getValues("phone"))
+    formData.append("avatar", image)
+    updateUserMutation.mutate(formData);
   };
 
   return (
-    <form className="formgrid grid" onSubmit={handleSubmit(onSubmit)}>
+    <form className="formgrid grid" onSubmit={handleSubmit(onSubmit)} enctype="multipart/form-data">
       <div className="field col-12 md:col-4">
         <label htmlFor="username">Username</label>
         <InputText
@@ -251,10 +250,6 @@ const UpdateUserForm = () => {
       </div>
       <div className="col-2">
         <Button type="button" label="Reset" className="w-full" />
-      </div>
-
-      <div className="col-2">
-        {showImage && <ImageRender data={getValues("image")} />}
       </div>
     </form>
   );

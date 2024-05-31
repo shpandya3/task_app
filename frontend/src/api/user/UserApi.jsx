@@ -41,7 +41,7 @@ export async function updateUser(userData) {
   return axios
     .put(
       `http://localhost:3001/users`,
-      {dataToUpdate: userData},
+      userData,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`, // Add Authorization header with bearer token
