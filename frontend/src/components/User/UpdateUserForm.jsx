@@ -25,7 +25,8 @@ const UpdateUserForm = () => {
     mutationFn: (data) => updateUser(data),
   });
 
-  const [image, setImage] = useState(null)
+  const [image, setImage] = useState(null);
+  const [showImage, setShowImage] = useState(false)
 
   const handlePdfUpload = (files) => {
     console.log("🚀 ~ handlePdfUpload ~ files:", files);
@@ -33,30 +34,42 @@ const UpdateUserForm = () => {
   };
 
   const handleImageUpload = async (data) => {
-    console.log("🚀 ~ handleImageUpload ~ files:",  data?.files) 
-    const blob = await fetch(data?.files[0]?.objectURL).then(r => r.blob());
-    const imageFromBlob = new File([blob], data?.files[0]?.name)
+    console.log("🚀 ~ handleImageUpload ~ files:", data?.files);
+
+    // const imageFromBlob = new File([blob], data?.files[0]?.name);
     // const response = await fetch(data?.files[0]?.objectURL)
     // console.log("🚀 ~ handleImageUpload ~ imageFromBlob:", imageFromBlob)
     // const imageData = await response.blob()
 
     // setValue("avatar", imageFromBlob);
-    setImage(imageFromBlob)
+    const reader = new FileReader();
+    let blob = await fetch(data?.files[0]?.objectURL).then((r) => r.blob());
+    reader.readAsDataURL(blob);
+    reader.onloadend = function () {
+      const base64data = reader.result;
+      console.log(base64data);
+      setImage(btoa(base64data));
+    };
   };
 
   const onSubmit = (data) => {
     // console.log("🚀 ~ onSubmit ~ data:", data);
     // console.log("🚀 ~ onSubmit ~ image:", image)
-    const formData = new FormData()
-    formData.append("username", getValues("username"))
-    formData.append("email", getValues("email"))
-    formData.append("phone", getValues("phone"))
-    formData.append("avatar", image)
+    const formData = new FormData();
+    formData.append("username", getValues("username"));
+    formData.append("email", getValues("email"));
+    formData.append("phone", getValues("phone"));
+    formData.append("avatar", image);
     updateUserMutation.mutate(formData);
+    setShowImage(true)
   };
 
   return (
-    <form className="formgrid grid" onSubmit={handleSubmit(onSubmit)} enctype="multipart/form-data">
+    <form
+      className="formgrid grid"
+      onSubmit={handleSubmit(onSubmit)}
+      encType="multipart/form-data"
+    >
       <div className="field col-12 md:col-4">
         <label htmlFor="username">Username</label>
         <InputText
@@ -250,6 +263,10 @@ const UpdateUserForm = () => {
       </div>
       <div className="col-2">
         <Button type="button" label="Reset" className="w-full" />
+      </div>
+
+      <div className="col-12">
+        {showImage && <ImageRender data={image}/>}
       </div>
     </form>
   );

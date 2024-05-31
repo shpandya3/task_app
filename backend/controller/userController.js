@@ -151,6 +151,7 @@ const deleteUserById = async (req, res) => {
 const updateUserProfile = async (req, res) => {
   try {
     console.log(req.body)
+    // req.body.avatar = Buffer.from(req.body.avatar).toString('base64')
     console.log(req.file)
     const updatedUser = await prisma.user.update({
       where: {
