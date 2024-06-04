@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.get("/", authMiddleware, authorize([roles["NORMAL"]]),getAllTasks);
 
-
 router.post("/", authMiddleware, authorize([roles["NORMAL"]]), createTask);
 
 router.put("/:taskId", authMiddleware, authorize([roles["NORMAL"]]), updateTask);

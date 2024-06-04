@@ -43,16 +43,14 @@ function SignUpForm({ checked, setChecked }) {
   return (
     <Card
       title={<div className="text-center">Sign Up</div>}
-      subTitle={
+      footer={
         <div className="text-center pt-2">
-          <div className="flex align-center justify-content-center pt-2">
-            <span className="mr-3 mt-2">Already Have an Account?</span>
-            <ToggleButton
-              checked={checked}
-              onLabel="Sign Up"
-              offLabel="Login"
-              onChange={(e) => setChecked(e.value)}
-              className="w-8rem"
+          <div className="flex align-items-center justify-content-center">
+            <span>Already Have an Account?</span>
+            <Button
+              label={checked ? "Sign Up" : "Login"}
+              link
+              onClick={() => setChecked(prev => !prev)}
             />
           </div>
         </div>

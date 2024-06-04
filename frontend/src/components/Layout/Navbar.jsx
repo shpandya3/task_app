@@ -103,7 +103,7 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="card">
+    <div className="card animated-navbar">
       <Menubar
         model={user? (user?.role === "ADMIN" ? adminItems : userItems) : homeItems}
         start={<span className="text-3xl font-bold">Task Tracker</span>}

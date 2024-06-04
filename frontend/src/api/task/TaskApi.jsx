@@ -1,8 +1,9 @@
 import axios from "axios";
+import { API_URL } from "../../config";
 
 export async function getTasks() {
   return axios
-    .get("http://localhost:3001/tasks", {
+    .get(`${API_URL}/tasks`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -14,7 +15,7 @@ export async function editTaskById(taskData) {
   const { id, ...body } = taskData;
   return axios
     .put(
-      `http://localhost:3001/tasks/${taskData.id}`,
+      `${API_URL}/tasks/${taskData.id}`,
       {dataToUpdate: body},
       {
         headers: {

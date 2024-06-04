@@ -3,8 +3,10 @@ import ViewUsersTable from '../../components/User/ViewUsersTable'
 
 const ViewUsers = () => {
   return (
-    <div className="col-12 pt-2">
+    <div className="grid p-6 grid-nogutter">
+    <div className="col-12">
       <ViewUsersTable />
+    </div>
     </div>
   )
 }

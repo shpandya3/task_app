@@ -21,9 +21,9 @@
 }
 
 .scroll-right {
-  animation: slideRight 0.5s ease-in-out forwards;
+  animation: slideRight 1s ease-in-out forwards;
 }
 
 .scroll-left {
-  animation: slideLeft 0.5s ease-in-out forwards;
+  animation: slideLeft 1s ease-in-out forwards;
 }

@@ -16,9 +16,6 @@ const {
 } = require("../controller/userController");
 const { authMiddleware, isAdmin, isUser, authorize} = require("../middleware/authMiddleware");
 const roles = require("../utils/roles");
-const multer = require("multer");
-
-const upload = multer({ dest: "../uploads" });
 
 const router = express.Router();
 
@@ -39,7 +36,7 @@ router.get("/chart-for-admin", authMiddleware, authorize([roles["ADMIN"]]), char
 router.get("/thumbnails", authMiddleware, authorize([roles["ADMIN"]]), getThumbnails); //admin
 router.get("/images", authorize([roles["ADMIN"]]), getImages);
 
-router.put("/", authMiddleware, authorize([roles["NORMAL"]]), upload.single( "avatar" ),  updateUserProfile);
+router.put("/", authMiddleware, authorize([roles["NORMAL"]]),  updateUserProfile);
 
 
 

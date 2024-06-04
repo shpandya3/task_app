@@ -2,6 +2,7 @@ import React from "react";
 import UserUpdates from "../../components/User/UserUpdates";
 import UserChart from "../../components/User/UserChart";
 
+
 const UserDashboard = () => {
   return (
     <div className="grid p-6 grid-nogutter">

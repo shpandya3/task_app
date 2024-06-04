@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Carousel } from 'primereact/carousel';
 import { ProductService } from './service/ProductService';
 
+import "./ImageSlider.css"
+
 function ImageSlider() {
   const [products, setProducts] = useState([]);
 //   const responsiveOptions = [
@@ -51,7 +53,7 @@ function ImageSlider() {
   };
 
   return (
-      <div className="card">
+      <div className="card scroll-left">
           <Carousel value={products} autoplayInterval={2000} numVisible={1} numScroll={1} showNavigators={false} showIndicators={false}  itemTemplate={productTemplate}/>
       </div>
   )

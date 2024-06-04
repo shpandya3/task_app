@@ -3,20 +3,20 @@
     justify-content: space-between;
 }
 
-.animated-navbar {
+.animated-user-form {
     /* Initial state (optional) */
     opacity: 0;
-    transform: translateY(-20px); /* Add a slight translation for visibility */
+    transform: translateY(20px); /* Add a slight translation for visibility */
     transition: all 0.3s ease-in-out; /* Transition properties */
   
     /* Animate on component mount or state change (optional) */
-    animation: navbar-slide-in 1s ease-in-out forwards;
+    animation: user-form-slide-in 1s ease-in-out forwards;
   }
   
-  @keyframes navbar-slide-in {
+  @keyframes user-form-slide-in {
     from {
       opacity: 0;
-      transform: translateY(-20px);
+      transform: translateY(20px);
     }
     to {
       opacity: 1;

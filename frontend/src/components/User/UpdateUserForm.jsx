@@ -7,7 +7,6 @@ import UploadImage from "../common/UploadImage";
 import UploadPdf from "../common/UploadPdf";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "primereact/button";
-import ImageRender from "../temp/ImageRender";
 import { updateUser } from "../../api/user/UserApi";
 import { useMutation } from "@tanstack/react-query";
 
@@ -25,48 +24,33 @@ const UpdateUserForm = () => {
     mutationFn: (data) => updateUser(data),
   });
 
-  const [image, setImage] = useState(null);
-  const [showImage, setShowImage] = useState(false)
-
-  const handlePdfUpload = (files) => {
-    console.log("🚀 ~ handlePdfUpload ~ files:", files);
-    setValue("introPdf", files[0]);
-  };
-
-  const handleImageUpload = async (data) => {
-    console.log("🚀 ~ handleImageUpload ~ files:", data?.files);
-
-    // const imageFromBlob = new File([blob], data?.files[0]?.name);
-    // const response = await fetch(data?.files[0]?.objectURL)
-    // console.log("🚀 ~ handleImageUpload ~ imageFromBlob:", imageFromBlob)
-    // const imageData = await response.blob()
-
-    // setValue("avatar", imageFromBlob);
+  const handlePdfUpload = async (data) => {
     const reader = new FileReader();
     let blob = await fetch(data?.files[0]?.objectURL).then((r) => r.blob());
     reader.readAsDataURL(blob);
     reader.onloadend = function () {
       const base64data = reader.result;
-      console.log(base64data);
-      setImage(btoa(base64data));
+      setValue("introPdf",btoa(base64data));
+    };
+  };
+
+  const handleImageUpload = async (data) => {
+    const reader = new FileReader();
+    let blob = await fetch(data?.files[0]?.objectURL).then((r) => r.blob());
+    reader.readAsDataURL(blob);
+    reader.onloadend = function () {
+      const base64data = reader.result;
+      setValue("avatar", btoa(base64data));
     };
   };
 
   const onSubmit = (data) => {
-    // console.log("🚀 ~ onSubmit ~ data:", data);
-    // console.log("🚀 ~ onSubmit ~ image:", image)
-    const formData = new FormData();
-    formData.append("username", getValues("username"));
-    formData.append("email", getValues("email"));
-    formData.append("phone", getValues("phone"));
-    formData.append("avatar", image);
-    updateUserMutation.mutate(formData);
-    setShowImage(true)
+    updateUserMutation.mutate(data);
   };
 
   return (
     <form
-      className="formgrid grid"
+      className="formGrid grid"
       onSubmit={handleSubmit(onSubmit)}
       encType="multipart/form-data"
     >
@@ -75,7 +59,7 @@ const UpdateUserForm = () => {
         <InputText
           id="username"
           aria-describedby="username-help"
-          className="w-full p-inputtext-sm"
+          className="w-full p-inputText-sm"
           {...register("username", { required: "Username is required" })}
         />
         {errors.username && (
@@ -87,7 +71,7 @@ const UpdateUserForm = () => {
         <InputText
           id="email"
           aria-describedby="email-help"
-          className="w-full p-inputtext-sm"
+          className="w-full p-inputText-sm"
           {...register("email", { required: "Email is required" })}
         />
         {errors.email && (
@@ -99,7 +83,7 @@ const UpdateUserForm = () => {
         <InputText
           id="phone"
           aria-describedby="phone-help"
-          className="w-full p-inputtext-sm"
+          className="w-full p-inputText-sm"
           {...register("phone", { required: "Phone number is required" })}
         />
         {errors.phone && (
@@ -123,7 +107,7 @@ const UpdateUserForm = () => {
               onChange={(e) => {
                 field.onChange(e.value);
               }}
-              className="w-full p-inputtext-sm"
+              className="w-full p-inputText-sm"
               mode="decimal"
               showButtons
               min={0}
@@ -135,7 +119,7 @@ const UpdateUserForm = () => {
       </div>
       <div className="field col-6 md:col-4">
         <label htmlFor="usage">Usage</label>
-        <div className="formgroup-inline pt-1">
+        <div className="formGroup-inline pt-1">
           <Controller
             name="usage"
             control={control}
@@ -209,7 +193,7 @@ const UpdateUserForm = () => {
       </div>
       <div className="field col-6 md:col-4">
         <label htmlFor="gender">Gender</label>
-        <div className="formgroup-inline pt-1">
+        <div className="formGroup-inline pt-1">
           <Controller
             name="gender"
             control={control}
@@ -263,10 +247,6 @@ const UpdateUserForm = () => {
       </div>
       <div className="col-2">
         <Button type="button" label="Reset" className="w-full" />
-      </div>
-
-      <div className="col-12">
-        {showImage && <ImageRender data={image}/>}
       </div>
     </form>
   );

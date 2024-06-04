@@ -3,6 +3,7 @@ import VerticalMarquee from "../common/VerticalMarquee";
 import { useQuery } from "@tanstack/react-query";
 import { getUserUpdates } from "../../api/user/UserApi";
 
+
 const UserUpdates = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["users", "updates"],
@@ -25,13 +26,13 @@ const UserUpdates = () => {
     );
   }
   return (
-    <VerticalMarquee>
-         
-      {data?.data.map((row) => (
-        <li key={row?.id} style={{whiteSpace: "pre-line"}} className="pt-3">{row.content}</li>
-      ))}
-      
-    </VerticalMarquee>
+      <VerticalMarquee>
+        {data?.data.map((row) => (
+          <li key={row?.id} style={{ whiteSpace: "pre-line" }} className="pt-3">
+            {row.content}
+          </li>
+        ))}
+      </VerticalMarquee>
   );
 };
 
